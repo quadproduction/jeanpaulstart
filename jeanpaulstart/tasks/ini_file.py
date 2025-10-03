@@ -1,9 +1,12 @@
 import shutil
+
 try:
-    from StringIO import StringIO
-except ImportError:
+    from configparser import ConfigParser, MissingSectionHeaderError
     from io import StringIO
-from configparser import ConfigParser, MissingSectionHeaderError
+except ImportError: # Python2 compatibility
+    from ConfigParser import ConfigParser, MissingSectionHeaderError
+    from StringIO import StringIO
+
 from jeanpaulstart import file_io
 from jeanpaulstart.constants import *
 

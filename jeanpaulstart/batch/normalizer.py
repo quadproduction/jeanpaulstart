@@ -1,7 +1,8 @@
 import logging
-from .task import Task
+
 from jeanpaulstart.constants import *
 from jeanpaulstart import plugin_loader
+from .task import Task
 
 
 plugin_loader.init()

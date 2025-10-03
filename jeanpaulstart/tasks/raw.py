@@ -12,7 +12,7 @@ def validate(user_data):
 
 def normalize_after_split(splitted):
     normalized = dict(splitted)
-    normalized['arguments']['async_'] = splitted['arguments'].get('async_', True)
+    normalized['arguments']['async'] = splitted['arguments'].get('async', True)
     normalized['arguments']['open_terminal'] = splitted['arguments'].get('open_terminal', False)
     return normalized
 
@@ -21,9 +21,14 @@ def apply_(async_, command, open_terminal):
     if async_:
         if open_terminal:
             command = "start cmd /k " + command
-            return system(command)
+            status = system(command)
         else:
             Popen(command, shell=True, close_fds=True)
-            return OK
+            status = OK
     else:
-        return call(command, shell=True)
+        status = call(command, shell=True)
+
+    if str(status) == "0":
+        return OK
+
+    return status

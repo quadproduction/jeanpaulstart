@@ -1,5 +1,6 @@
 import os
 import logging
+
 from . import environment
 from . import plugin_loader
 from .constants import *
@@ -50,15 +51,34 @@ class Executor(object):
     """
     Run batches tasks, set by step or as a whole
     """
-    def __init__(self, batch):
+    def __init__(self, batch, option_name=None):
         self.batch = batch
         self.status = EXEC_IDLE
         self._messages = list()
         self._message_index = 0
+        self._tasks = list()
         self._task_index = 0
         self._ignored_errors = 0
         self._registered_status = None
         self._environment_backup = dict()
+
+        os.environ["EXTRA_PYTHONPATH"] = ""
+        if batch.stagings is not None:
+            os.environ["VERSION"] = batch.version
+            os.environ["STAGING"] = option_name
+            os.environ["EXTRA_PYTHONPATH"] = os.environ["EXTRA_PYTHONPATH"] + ";" + os.path.join(batch.staging_folder, option_name)
+        elif batch.options:
+            if batch.version is not None:
+                os.environ["VERSION"] = batch.version
+            for option in self.batch.options: 
+                if option.load_status == OK and option.name == option_name:
+                    self._tasks += option.tasks
+                    break
+        elif batch.version is not None:
+            os.environ["VERSION"] = option_name
+            os.environ["NO_UPDATE"] = "True"
+
+        self._tasks += self.batch.tasks
 
         if self.batch.load_status != OK:
             logging.info('Given batch is not loaded : ' + self.batch.load_status)
@@ -83,7 +103,7 @@ class Executor(object):
         Property that returns the progress of execution as a float [0..1]
         :return: float
         """
-        return float(self._task_index) / len(self.batch.tasks)
+        return float(self._task_index) / len(self._tasks)
 
     @property
     def messages(self):
@@ -121,10 +141,10 @@ class Executor(object):
         (useful for displaying Ui messages before execution)
         :return: The next task, None if execution finished of Batch not OK
         """
-        if self._task_index >= len(self.batch.tasks):
+        if self._task_index >= len(self._tasks):
             return
 
-        return self.batch.tasks[self._task_index]
+        return self._tasks[self._task_index]
 
     def _backup_environment(self):
         self._environment_backup = dict(os.environ)
@@ -158,7 +178,7 @@ class Executor(object):
     def _finish(self):
         self._post_messages(['[{name}] Finished (tasks={tasks}, errors_ignored={errors})'.format(
             name=self.batch.name,
-            tasks=len(self.batch.tasks),
+            tasks=len(self._tasks),
             errors=self._ignored_errors
         )])
         self.status = EXEC_FINISHED
@@ -186,7 +206,7 @@ class Executor(object):
         if self.has_stopped:
             return self.status
 
-        current_task = self.batch.tasks[self._task_index]
+        current_task = self._tasks[self._task_index]
         self._task_index += 1
 
         status, messages = _apply_(current_task)
@@ -202,7 +222,7 @@ class Executor(object):
         if current_task.exit_if_not_ok and status not in (OK, TASK_WHEN_FALSE):
             self._abort(current_task.name, 'Status was not OK and exit_if_not_ok=true')
 
-        if self._task_index >= len(self.batch.tasks):
+        if self._task_index >= len(self._tasks) and self.status != EXEC_ABORTED:
             self._finish()
 
         return status, self.last_messages
@@ -236,13 +256,14 @@ class Executor(object):
         return self._registered_status, self._messages, self.status
 
 
-def run_batch(batch):
+def run_batch(batch, option_name=None):
     """
     Runs the given batch
     :param batch: a valid and normalized batch
+    :param option_name: one of the batch options name to run
     :return: registered status, list of messages, executor status
     """
-    executor = Executor(batch)
+    executor = Executor(batch, option_name)
     registered_status, messages, executor_status = executor.run_all()
 
     if executor.success:

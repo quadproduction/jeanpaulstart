@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 
 NAME = 'jeanpaulstart'
-VERSION = '2.3.0'
+VERSION = '3.4.0'
 DESCRIPTION = 'Launcher'
 AUTHOR = 'Cube Creative'
 AUTHOR_EMAIL = 'development@cube-creative.com'
@@ -36,7 +36,7 @@ setup(
     long_description=_long_description,
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
-    packages=find_packages(exclude=['tests']),
+    packages=find_packages(exclude=['tests*']),
     install_requires=_requirements,
     include_package_data=True
 )

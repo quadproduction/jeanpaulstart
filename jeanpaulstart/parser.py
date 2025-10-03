@@ -1,7 +1,10 @@
 import os
 import json
+import logging
 from collections import OrderedDict
 import yaml
+
+from .file_io import norm_slashes
 
 
 class _OrderedDictYAMLLoader(yaml.Loader):
@@ -43,10 +46,6 @@ class _OrderedDictYAMLLoader(yaml.Loader):
             mapping[key] = value
 
         return mapping
-
-
-def _norm_slashes(path):
-    return path.replace('\\', os.sep).replace('/', os.sep)
 
 
 def _str_ordered_dict(pairs):
@@ -123,9 +122,10 @@ def from_file(filepath):
     :param filepath:
     :return: None if file not parsed or doesn't exist or not .json / .yml
     """
-    filepath = _norm_slashes(filepath)
+    filepath = norm_slashes(filepath)
 
     if not os.path.isfile(filepath):
+        logging.info("File doesn't exists")
         return None
 
     if filepath.endswith('.yml'):
@@ -147,7 +147,7 @@ def from_folder(folder):
         return filepathes
 
     for filename in sorted(os.listdir(folder)):
-        filepath = _norm_slashes(os.path.join(folder, filename))
+        filepath = norm_slashes(os.path.join(folder, filename))
 
         if not filepath.endswith(('.json', '.yml')): continue
         if not os.path.exists(filepath): continue
