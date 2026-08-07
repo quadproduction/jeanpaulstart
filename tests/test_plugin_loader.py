@@ -241,7 +241,7 @@ class TestPluginLoader(unittest.TestCase):
         )
 
         self.assertEqual(
-            plugin_loader.loaded_plugins.keys(),
+            list(plugin_loader.loaded_plugins.keys()),
             ['command-name']
         )
 

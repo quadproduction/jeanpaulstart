@@ -1,15 +1,14 @@
 import logging
-
+from .task import Task
 from jeanpaulstart.constants import *
 from jeanpaulstart import plugin_loader
-from .task import Task
 
 
 plugin_loader.init()
 
 
 def _catch_exception(task_data):
-    if 'ignore_errors' in task_data.keys():
+    if 'ignore_errors' in task_data:
         logging.info(
             "Task '{name}' : 'ignore_errors' has been renamed to 'catch_exception', "
             "please update your batch".format(
@@ -31,7 +30,7 @@ def _exit_if_not_ok(task_data):
         ))
         return False
 
-    if 'abort_on_failure' in task_data.keys():
+    if 'abort_on_failure' in task_data:
         logging.info(
             "Task '{name}' : 'abort_on_failure' has been renamed to 'exit_if_not_ok', "
             "please update your batch".format(

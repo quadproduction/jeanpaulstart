@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: main.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/jeanpaulstart/__main__.py",
+            "args": [
+                "-f",
+                "C:/Users/Guilhem/quad/jeanpaulstart/test.yml"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "python": "${workspaceFolder}/.venv/Scripts/python.exe",
+            "env": {
+                "DEBUG": "false",
+                "DEV": "true",
+                "SETTINGS_FOLDER": "L:\\RESSOURCES\\WIZZ\\Settings",
+                "PYTHONPATH": "${workspaceFolder}",
+                "FORCE_RAM_TRACKER_CONNECTION": "false"
+            }
+        }
+    ]
+}

@@ -6,8 +6,10 @@ __pycache__/
 .coverage
 .pytest_cache
 
-venv/
-
 Thumbs.db
-*.egg-info
-.vscode/**
+.DS_Store
+
+build/
+dist/
+jeanpaulstartui.egg-info/
+.history

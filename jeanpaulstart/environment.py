@@ -31,9 +31,6 @@ def parse_expression(expression):
 
 
 def parse(value):
-    if value == 'async':
-        return 'async_'
-
     if isinstance(value, bool):
         return value
 
@@ -50,6 +47,8 @@ def _parse_from_dict(dict_):
     parsed_dict = dict()
     for key, value in dict_.items():
         key = parse(key)
+        if key == 'async':
+            key = 'async_'
 
         if isinstance(value, list):
             parsed_dict[key] = [parse(item) for item in value]
