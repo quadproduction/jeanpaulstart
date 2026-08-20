@@ -1,7 +1,11 @@
 import os
+import sys
+import shutil
 import unittest
 from glob import glob
 from jeanpaulstart import constants, plugin_loader
+
+sys.path.insert(0, os.path.dirname(__file__))
 from mock_plugin import MockPlugin
 
 
@@ -84,7 +88,7 @@ class TestPluginLoader(unittest.TestCase):
             os.remove(filepath)
 
         if os.path.isdir(self.temp_plugin_folder):
-            os.rmdir(self.temp_plugin_folder)
+            shutil.rmtree(self.temp_plugin_folder)
 
     def test_repr(self):
         repr = str(self.loader)
@@ -241,7 +245,7 @@ class TestPluginLoader(unittest.TestCase):
         )
 
         self.assertEqual(
-            plugin_loader.loaded_plugins.keys(),
+            list(plugin_loader.loaded_plugins.keys()),
             ['command-name']
         )
 

@@ -9,7 +9,7 @@ def _validate_name(data):
     if 'name' not in data.keys():
         return VALID_NAME_MISSING, ""
 
-    if not (isinstance(data['name'], str) or isinstance(data['name'], unicode)):
+    if not (isinstance(data['name'], str)):
         return VALID_NAME_NOT_STRING, ""
 
     return OK, ""

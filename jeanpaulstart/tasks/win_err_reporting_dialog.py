@@ -1,4 +1,4 @@
-import logging
+from loguru import logger
 
 from jeanpaulstart.constants import *
 
@@ -9,7 +9,7 @@ except ImportError: # Python2 compatibility
         import _winreg as winreg
     except ImportError as e:
         winreg = None
-        logging.warning("[win_err_reporting_dialog] : Cannot manipulate Windows Registry (are you on Windows ?)")
+        logger.warning("[win_err_reporting_dialog] : Cannot manipulate Windows Registry (are you on Windows ?)")
 
 TASK_COMMAND = 'win_err_reporting_dialog'
 
@@ -24,7 +24,7 @@ def normalize_after_split(splitted):
 
 def apply_(state):
     if winreg is None:
-        logging.info("[win_err_reporting_dialog] : Cannot manipulate Windows Registry (are you on Windows ?)")
+        logger.info("[win_err_reporting_dialog] : Cannot manipulate Windows Registry (are you on Windows ?)")
         return OK
 
     keyVal = r'Software\Microsoft\Windows\Windows Error Reporting'

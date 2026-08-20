@@ -31,8 +31,8 @@ def parse_expression(expression):
 
 
 def parse(value):
-    if value == 'async':
-        return 'async_'
+    if not value:
+        return None
 
     if isinstance(value, bool):
         return value

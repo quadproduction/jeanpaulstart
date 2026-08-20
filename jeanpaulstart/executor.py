@@ -1,5 +1,6 @@
 import os
-import logging
+
+from loguru import logger
 
 from . import environment
 from . import plugin_loader
@@ -73,6 +74,7 @@ class Executor(object):
             for option in self.batch.options: 
                 if option.load_status == OK and option.name == option_name:
                     self._tasks += option.tasks
+                    logger.debug("Loaded option tasks: {}", self._tasks)
                     break
         elif batch.version is not None:
             os.environ["VERSION"] = option_name
@@ -81,7 +83,7 @@ class Executor(object):
         self._tasks += self.batch.tasks
 
         if self.batch.load_status != OK:
-            logging.info('Given batch is not loaded : ' + self.batch.load_status)
+            logger.info("Given batch is not loaded : {}", self.batch.load_status)
             self.status = BATCH_NOT_LOADED
 
     def __repr__(self):
@@ -94,7 +96,8 @@ class Executor(object):
         self._message_index = len(self._messages)
 
     def _post_messages(self, messages):
-        [logging.info(message) for message in messages]
+        for message in messages:
+            logger.info(message)
         self._messages += messages
 
     @property

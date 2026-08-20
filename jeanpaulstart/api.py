@@ -45,13 +45,12 @@ def batches_from_folders(folders):
     return _batch.from_folders(folders)
 
 
-def batches_for_user(batch_directories, username, tags_filepath, elasticsearch_url=None, elasticsearch_index=None):
+def batches_for_user(batch_directories, username, tags_filepath):
     """
     Loads all the batches in given folders, with matching tags for given tags file and username
     :param batch_directories: A list of folders
     :param tags_filepath: The filepath to the tags definition file
-    :param elasticsearch_url: The url of elasticsearch database
     :param username: The username
     :return: A list of successfully loaded batches
     """
-    return _batch.from_folders_for_user(batch_directories, username, tags_filepath, elasticsearch_url, elasticsearch_index)
+    return _batch.from_folders_for_user(batch_directories, username, tags_filepath)

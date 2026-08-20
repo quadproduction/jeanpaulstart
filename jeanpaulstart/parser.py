@@ -1,8 +1,8 @@
 import os
 import json
-import logging
 from collections import OrderedDict
 import yaml
+from loguru import logger
 
 from .file_io import norm_slashes
 
@@ -48,22 +48,6 @@ class _OrderedDictYAMLLoader(yaml.Loader):
         return mapping
 
 
-def _str_ordered_dict(pairs):
-    return OrderedDict(
-        [(_str_hook(key, ignore_dicts=True), _str_hook(value, ignore_dicts=True)) for key, value in pairs]
-    )
-
-
-def _str_hook(data, ignore_dicts=False):
-    if isinstance(data, unicode):
-        return data.encode('utf-8')
-
-    if isinstance(data, list):
-        return [_str_hook(item, ignore_dicts=True) for item in data]
-
-    return data
-
-
 def from_yaml(yaml_content):
     """
     Parses a YAML string
@@ -80,10 +64,7 @@ def from_json(json_content):
     :param json_content:
     :return:
     """
-    data = _str_hook(
-        json.loads(json_content, object_pairs_hook=_str_ordered_dict, object_hook=_str_hook),
-        ignore_dicts=True
-    )
+    data = json.loads(json_content, object_pairs_hook=OrderedDict)
     return data
 
 
@@ -125,7 +106,7 @@ def from_file(filepath):
     filepath = norm_slashes(filepath)
 
     if not os.path.isfile(filepath):
-        logging.info("File doesn't exists")
+        logger.info("File doesn't exists")
         return None
 
     if filepath.endswith('.yml'):

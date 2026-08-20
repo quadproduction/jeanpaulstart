@@ -10,4 +10,5 @@ venv/
 
 Thumbs.db
 *.egg-info
-.vscode/**
+.history
+.venv
