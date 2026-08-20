@@ -1,6 +1,6 @@
 import sys
-import logging
 import argparse
+from loguru import logger
 import jeanpaulstart
 
 
@@ -17,9 +17,6 @@ def process_args():
 
 
 if __name__ == '__main__':
-    log = logging.getLogger()
-    log.setLevel(logging.INFO)
-
     args = process_args()
     jeanpaulstart.load_plugins()
 
@@ -40,5 +37,5 @@ if __name__ == '__main__':
     else:
         exit_code = status
 
-    logging.info("Exit code is '{}'".format(exit_code))
+    logger.info("Exit code is '{}'", exit_code)
     sys.exit(exit_code)

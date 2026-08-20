@@ -123,6 +123,26 @@ everyone:
 ...
 ````
 
+## Options
+
+Allow to trigger specific tasks when selecting an option when clicking on the batch.
+
+By default, when 1 or more option are setted for a batch, user will **always** have to first click on the batch, then select the desired version. You can set the property `option_mandatory` to `false` to enable a default launch (with no options) when the user click on the icon, and to allow him to select an option when he click on the arrow next to the batch label.
+
+An option allow you to define specific tasks that will be triggered when selecting (for example, setting an environment variable). It works the same way as a regular batch, and also profit from tags.
+
+````yaml
+options:
+  - name: 0.1.0
+    tags: 
+      - everyone
+    tasks:
+      - name: Task Name
+        environment:
+          name: JPS_TOOL_VERSION
+          value: 0.1.0
+````
+
 ## Tasks
 
 Each task is identified by a command name
@@ -211,6 +231,25 @@ Parameter `state` is not mandatory, defaults to `present`
   pip:
       name: git+http://some/url.git
 ````
+
+### UV
+
+Runs `uv pip install`.
+
+You can specify a specific version to install thanks to the environment variable `JPS_TOOL_VERSION` that you can, for example, assign with a batch option.
+
+`index_url` allows to use private index (like `pypiserver`).
+
+`refresh_index` delete uv cache when asking for last or defined version.
+
+````yaml
+- name: Task Name
+  uv:
+      name: PySide
+      index_url: http://127.0.0.1:8080/simple  # optional, default: pypi.org
+      refresh_index: [true|false]    
+````
+
 
 ### Raw
 

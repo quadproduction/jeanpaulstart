@@ -31,6 +31,9 @@ def parse_expression(expression):
 
 
 def parse(value):
+    if not value:
+        return None
+
     if isinstance(value, bool):
         return value
 

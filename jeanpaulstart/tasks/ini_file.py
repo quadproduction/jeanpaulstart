@@ -31,7 +31,7 @@ class _IniConfigParser(ConfigParser):
 
     def _set_content(self, content):
         try:
-            self.read_file(StringIO(content))
+            self.read_file(string_io)
         except MissingSectionHeaderError:
             raise WrongIniContent("Given content is not of ini type")
 

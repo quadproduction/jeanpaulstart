@@ -1,9 +1,9 @@
 import os
-import sys
-import logging
 import importlib.util
 from glob import glob
 from collections import OrderedDict
+from loguru import logger
+
 from .constants import *
 
 
@@ -27,7 +27,7 @@ class Loader(object):
         except ValueError:
             pass
 
-        logging.info("Listed {count:03d} plugins".format(count=len(names)))
+        logger.info("Listed {:03d} plugins", len(names))
 
         return names
 
@@ -39,19 +39,10 @@ class Loader(object):
             return None
 
         name = os.path.splitext(os.path.basename(plugin_filepath))[0]
+        #TODO : imp is deprecated, we need to find an alternative with importlib
         spec = importlib.util.spec_from_file_location(name, plugin_filepath)
-        if spec is None or spec.loader is None:
-            return None
-
         module = importlib.util.module_from_spec(spec)
-        sys.modules[name] = module
-        write_bytecode = sys.dont_write_bytecode
-        try:
-            sys.dont_write_bytecode = True
-            spec.loader.exec_module(module)
-        finally:
-            sys.dont_write_bytecode = write_bytecode
-
+        spec.loader.exec_module(module)
         return module
 
     def load_by_name(self, plugin_name):
@@ -91,25 +82,27 @@ class Loader(object):
             plugin = self.load(plugin_name=plugin_name)
             status = self.validate(plugin)
 
-            if status != OK:
-                logging.warning("Could not validate plugin : '{plugin_name}.py' ({status})".format(
-                    plugin_name=plugin_name,
-                    status=status
-                ))
+            if status is not OK:
+                logger.warning(
+                    "Could not validate plugin : '{}.py' ({})",
+                    plugin_name,
+                    status
+                )
                 continue
 
             command_name = plugin.TASK_COMMAND
 
-            if command_name in plugins:
-                logging.warning("Skipping plugin '{plugin_name}.py' : command '{command_name}' already loaded".format(
-                    plugin_name=plugin_name,
-                    command_name=command_name
-                ))
+            if command_name in plugins.keys():
+                logger.warning(
+                    "Skipping plugin '{}.py' : command '{}' already loaded",
+                    plugin_name,
+                    command_name
+                )
                 continue
 
             plugins[command_name] = plugin
 
-            logging.info("Successfully loaded plugin : '{plugin_name}.py'".format(plugin_name=plugin_name))
+            logger.info("Successfully loaded plugin : '{}.py'", plugin_name)
 
         return plugins
 
@@ -127,7 +120,7 @@ def init(plugin_folder=None, force=False):
     if loaded_plugins and not force:
         return False
 
-    logging.info("Initializing plugins from {}".format(plugin_folder))
+    logger.info("Initializing plugins from {}", plugin_folder)
 
     loader = Loader(plugin_folder=plugin_folder)
     loaded_plugins = loader.load_all()

@@ -9,7 +9,7 @@ def _validate_name(data):
     if 'name' not in data:
         return VALID_NAME_MISSING, ""
 
-    if not isinstance(data['name'], str):
+    if not (isinstance(data['name'], str)):
         return VALID_NAME_NOT_STRING, ""
 
     return OK, ""

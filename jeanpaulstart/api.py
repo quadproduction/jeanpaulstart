@@ -49,7 +49,7 @@ def batches_from_folders(folders):
     return _batch.from_folders(folders)
 
 
-def batches_for_user(batch_directories, tags_filepath, username):
+def batches_for_user(batch_directories, username, tags_filepath):
     """
     Loads all the batches in given folders, with matching tags for given tags file and username
     :param batch_directories: A list of folders
@@ -57,4 +57,4 @@ def batches_for_user(batch_directories, tags_filepath, username):
     :param username: The username
     :return: A list of successfully loaded batches
     """
-    return _batch.from_folders_for_user(batch_directories, tags_filepath, username)
+    return _batch.from_folders_for_user(batch_directories, username, tags_filepath)
