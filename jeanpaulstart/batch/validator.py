@@ -6,7 +6,7 @@ plugin_loader.init()
 
 
 def _validate_name(data):
-    if 'name' not in data.keys():
+    if 'name' not in data:
         return VALID_NAME_MISSING, ""
 
     if not (isinstance(data['name'], str)):
@@ -16,14 +16,14 @@ def _validate_name(data):
 
 
 def _validate_icon(data):
-    if 'icon_path' not in data.keys():
+    if 'icon_path' not in data:
         return VALID_ICON_MISSING, ""
 
     return OK, ""
 
 
 def _validate_tags(data):
-    if 'tags' not in data.keys():
+    if 'tags' not in data:
         return VALID_TAGS_MISSING, ""
 
     if not isinstance(data['tags'], list):
@@ -46,7 +46,7 @@ def _validate_task(task_data):
 
 
 def _validate_tasks(data):
-    if 'tasks' not in data.keys():
+    if 'tasks' not in data:
         return VALID_TASKS_MISSING, ""
 
     if not isinstance(data['tasks'], list):
@@ -54,7 +54,7 @@ def _validate_tasks(data):
 
     for task in data['tasks']:
         status, message = _validate_task(task)
-        if status is not OK:
+        if status != OK:
             return status, message
 
     return OK, ""
@@ -62,15 +62,15 @@ def _validate_tasks(data):
 
 def validate(data):
     status, message = _validate_name(data)
-    if status is not OK: return status, message
+    if status != OK: return status, message
 
     status, message = _validate_icon(data)
-    if status is not OK: return status, message
+    if status != OK: return status, message
 
     status, message = _validate_tags(data)
-    if status is not OK: return status, message
+    if status != OK: return status, message
 
     status, message = _validate_tasks(data)
-    if status is not OK: return status, message
+    if status != OK: return status, message
 
     return OK, ""

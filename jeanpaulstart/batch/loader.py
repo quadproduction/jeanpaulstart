@@ -34,10 +34,6 @@ def from_folders_for_user(batch_directories, username, tags_filepath):
 
     for batch_ in batches:
         if not user_tags.isdisjoint(batch_.tags):
-            # check tags options
-            for batch_option in reversed(batch_.options):
-                if user_tags.isdisjoint(batch_option.tags):
-                    batch_.options.remove(batch_option)
             user_batches.append(batch_)
 
     return user_batches

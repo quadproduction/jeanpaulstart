@@ -21,14 +21,9 @@ def apply_(async_, command, open_terminal):
     if async_:
         if open_terminal:
             command = "start cmd /k " + command
-            status = system(command)
+            return system(command)
         else:
             Popen(command, shell=True, close_fds=True)
-            status = OK
+            return OK
     else:
-        status = call(command, shell=True)
-
-    if str(status) == "0":
-        return OK
-
-    return status
+        return call(command, shell=True)

@@ -1,12 +1,6 @@
 import shutil
-
-try:
-    from configparser import ConfigParser, MissingSectionHeaderError
-    from io import StringIO
-except ImportError: # Python2 compatibility
-    from ConfigParser import ConfigParser, MissingSectionHeaderError
-    from StringIO import StringIO
-
+from io import StringIO
+from configparser import ConfigParser, MissingSectionHeaderError
 from jeanpaulstart import file_io
 from jeanpaulstart.constants import *
 
@@ -36,7 +30,6 @@ class _IniConfigParser(ConfigParser):
         return result_content
 
     def _set_content(self, content):
-        string_io = StringIO(content)
         try:
             self.read_file(string_io)
         except MissingSectionHeaderError:

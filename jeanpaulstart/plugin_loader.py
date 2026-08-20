@@ -19,7 +19,7 @@ class Loader(object):
         return "Loader(folder={folder})".format(folder=self.plugin_folder)
 
     def list_names(self):
-        search_path = os.path.join(self.plugin_folder, "*.py").replace('\\', '/')
+        search_path = os.path.join(self.plugin_folder, "*.py")
         files = glob(search_path)
         names = sorted([os.path.splitext(os.path.basename(file_))[0] for file_ in files])
         try:

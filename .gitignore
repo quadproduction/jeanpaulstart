@@ -6,8 +6,6 @@ __pycache__/
 .coverage
 .pytest_cache
 
-venv/
-
 Thumbs.db
 *.egg-info
 .history

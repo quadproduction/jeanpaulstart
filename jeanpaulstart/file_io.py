@@ -32,7 +32,3 @@ def remove(path):
         os.unlink(path)
     elif os.path.isdir(path):
         shutil.rmtree(path)
-
-
-def norm_slashes(path):
-    return path.replace('\\', '/')

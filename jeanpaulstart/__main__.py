@@ -12,27 +12,19 @@ def process_args():
         type=str,
         help="Filepath to batch (.json / .yml)"
     )
-    parser.add_argument(
-        '--option',
-        type=str,
-        help="batch option"
-    )
     parse_args = parser.parse_args()
     return parse_args
 
 
 if __name__ == '__main__':
     args = process_args()
-
     jeanpaulstart.load_plugins()
 
-    clean_file_path = args.filepath.replace('\\', '/')
-    if not clean_file_path:
+    if not args.filepath:
         sys.exit()
 
-    batch_option = args.option
+    status = jeanpaulstart.run_from_filepath(args.filepath)
 
-    status = jeanpaulstart.run_from_filepath(clean_file_path, batch_option)
     if status == jeanpaulstart.BATCH_NO_DATA:
         exit_code = 2  # No such file or directory
 

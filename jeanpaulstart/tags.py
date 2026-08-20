@@ -9,7 +9,7 @@ def _tags_dict_from_data(tags_data):
     tags_dict = dict()
 
     for tag, user_list in tags_data.items():
-        tags_dict[tag] = sorted([user.lower() for user in user_list])
+        tags_dict[tag] = sorted(user_list)
 
     return tags_dict
 
