@@ -17,7 +17,8 @@ def normalize_after_split(splitted):
 
 
 def apply_(name, state):
-    command = "pip install {state}{name}".format(
+    command = "pip {action} {state}{name}".format(
+        action='uninstall -y' if state == STATE_ABSENT else 'install',
         state='--upgrade ' if state == STATE_FORCE_REINSTALL else '',
         name=name
     )

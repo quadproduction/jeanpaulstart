@@ -5,6 +5,7 @@ from packaging.version import Version
 from jeanpaulstart import parser
 from jeanpaulstart.constants import *
 from jeanpaulstart.environment import parse
+from jeanpaulstart.file_io import norm_slashes
 from .validator import validate
 from .normalizer import normalize
 
@@ -24,9 +25,11 @@ class Batch(object):
         if data is not None:
             logger.info('New batch from data')
             self._data = data
+
         elif source is not None:
             logger.info('New batch from source')
             self._data = parser.parse(source)
+
         elif filepath is not None:
             filepath = norm_slashes(filepath)
             logger.info("New batch from file {}", filepath)
@@ -41,7 +44,6 @@ class Batch(object):
         self.tags = list()
         self.options = list()
         self.tasks = list()
-        self.description = None
 
         self._load()
 

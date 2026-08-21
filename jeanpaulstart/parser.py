@@ -4,6 +4,8 @@ from collections import OrderedDict
 import yaml
 from loguru import logger
 
+from .file_io import norm_slashes
+
 
 class _OrderedDictYAMLLoader(yaml.Loader):
 
@@ -52,7 +54,7 @@ def from_yaml(yaml_content):
     :param yaml_content:
     :return:
     """
-    data = yaml.load(yaml_content, Loader=_OrderedDictYAMLLoader)
+    data = yaml.load(yaml_content, _OrderedDictYAMLLoader)
     return data
 
 
@@ -101,7 +103,7 @@ def from_file(filepath):
     :param filepath:
     :return: None if file not parsed or doesn't exist or not .json / .yml
     """
-    filepath = _norm_slashes(filepath)
+    filepath = norm_slashes(filepath)
 
     if not os.path.isfile(filepath):
         logger.info("File doesn't exists")
@@ -126,7 +128,7 @@ def from_folder(folder):
         return filepathes
 
     for filename in sorted(os.listdir(folder)):
-        filepath = _norm_slashes(os.path.join(folder, filename))
+        filepath = norm_slashes(os.path.join(folder, filename))
 
         if not filepath.endswith(('.json', '.yml')): continue
         if not os.path.exists(filepath): continue

@@ -1,6 +1,4 @@
-from .constants import *
 from . import batch as _batch
-#import batch as _batch
 from .executor import Executor, run_batch
 from . import plugin_loader as _plugin_loader
 
@@ -15,28 +13,26 @@ def load_plugins():
     _plugin_loader.init(force=True)
 
 
-def run_from_filepath(filepath):
+def run_from_filepath(filepath, option_name=None):
     """
     Runs batch from  a given filepath (json or yaml)
     :param filepath: String
+    :param option_name: batch option to run
     :return: BATCH_NO_DATA, BATCH_NOT_VALID, BATCH_NOT_NORMALIZED or Executor's registered status
     """
     batch = Batch(filepath=filepath)
-
-    if batch.load_status != OK:
-        return batch.load_status
-
-    return run_batch(batch)
+    return run_batch(batch, option_name)
 
 
-def executor_from_filepath(filepath):
+def executor_from_filepath(filepath, option_name=None):
     """
     Return an Executor from a given batch filepath
     :param filepath: Path to a batch file
+    :param option_name: batch option to execute
     :return: Executor
     """
     batch = Batch(filepath=filepath)
-    executor = Executor(batch)
+    executor = Executor(batch, option_name)
     return executor
 
 

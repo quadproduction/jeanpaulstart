@@ -2,6 +2,7 @@ from loguru import logger
 
 from jeanpaulstart.constants import *
 from jeanpaulstart import plugin_loader
+from .task import Task
 
 
 plugin_loader.init()
