@@ -81,8 +81,8 @@ def apply_(name, state, version=None, index_url=None, refresh_index=False):
         return OK
 
     logger.info(
-        f"Installation of {name} in version {target}" if installed else
-        f"Update of {name} from {installed} to {target}"
+        f"Update of {name} from {installed} to {target}" if installed else
+        f"Installation of {name} in version {target}"
     )
 
     command = ["uv", "pip", "install", f"{name}=={target}"]    
@@ -92,7 +92,8 @@ def apply_(name, state, version=None, index_url=None, refresh_index=False):
         command.extend(["--index-url", index_url])
 
     logger.info(' '.join(command))
-    returncode = subprocess.run(command).returncode
+    
+    returncode = subprocess.run(command, env=os.environ.copy()).returncode
 
     if returncode == 0:
         return OK

@@ -1,10 +1,8 @@
 from os import path
-from codecs import open
 from setuptools import setup, find_packages
 
 
 NAME = 'jeanpaulstart'
-VERSION = '3.4.0'
 DESCRIPTION = 'Launcher'
 AUTHOR = 'Cube Creative'
 AUTHOR_EMAIL = 'development@cube-creative.com'
@@ -14,13 +12,17 @@ _here = path.abspath(path.dirname(__file__))
 _readme_filepath = path.join(_here, 'README.md')
 _requirements_filepath = path.join(_here, 'requirements.txt')
 
+# Lit __version__ depuis version.py sans importer le package
+_version_info = {}
+with open(path.join(_here, 'jeanpaulstart', 'version.py')) as f:
+    exec(f.read(), _version_info)
+VERSION = _version_info['__version__']
 
 if path.isfile(_readme_filepath):
     with open(_readme_filepath, encoding='utf-8') as readme_file:
         _long_description = readme_file.read()
 else:
     _long_description = 'Unable to load README.md'
-
 
 if path.isfile(_requirements_filepath):
     with open(_requirements_filepath) as requirements_file:
