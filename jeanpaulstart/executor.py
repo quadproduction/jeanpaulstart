@@ -65,9 +65,10 @@ class Executor(object):
 
         os.environ["EXTRA_PYTHONPATH"] = ""
         if batch.stagings is not None:
-            os.environ["VERSION"] = batch.version
-            os.environ["STAGING"] = option_name
-            os.environ["EXTRA_PYTHONPATH"] = os.environ["EXTRA_PYTHONPATH"] + ";" + os.path.join(batch.staging_folder, option_name)
+            staging_path = os.path.join(batch.staging_folder, option_name)
+            os.environ["STAGING"] = staging_path
+            os.environ["PYTHONPATH"] = os.environ["PYTHONPATH"] + ";" + staging_path
+
         elif batch.options:
             if batch.version is not None:
                 os.environ["VERSION"] = batch.version
