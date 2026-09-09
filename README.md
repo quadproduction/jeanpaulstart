@@ -240,6 +240,22 @@ You can specify a specific version to install thanks to the environment variable
       refresh_index: [true|false]    
 ````
 
+### Requirements
+
+Runs `uv sync --inexact --project {project_path} --no-install-project --active`.
+
+`project_path` is automatically retrieved from `REQUIREMENTS_FOLDER` environment variable, which is automatically setted if batch has `staging_folder` registered.
+
+You can also set `requirements_folder` property in batch to specify used project_path (and will have priority on auto-generated environment variable).
+
+Note that your folder needs to have a correctly formatted `pyproject.toml` file.
+
+````yaml
+- name: Task Name
+  requirements:
+      name: PySide
+      requirements_folder: path//to//folder
+````
 
 ### Raw
 
