@@ -24,7 +24,7 @@ def apply_(name=None, requirements_folder=None, index_url=None, trusted_host=Non
         raise ValueError("requirements_folder must be specified either as an argument or as an environment variable")
 
     project_path = Path(requirements_folder or env_requirements_folder).as_posix()
-    exit_code = call(f"uv sync --project {project_path} --no-install-project --active", shell=True)
+    exit_code = call(f"uv sync --inexact --project {project_path} --no-install-project --active", shell=True)
 
     if exit_code == 0:
         return OK
