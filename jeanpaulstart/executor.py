@@ -1,6 +1,7 @@
 import os
 
 from loguru import logger
+from pathlib import Path
 
 from . import environment
 from . import plugin_loader
@@ -65,10 +66,14 @@ class Executor(object):
 
         os.environ["EXTRA_PYTHONPATH"] = ""
         if batch.stagings is not None:
-            staging_path = os.path.join(batch.staging_folder, option_name) if option_name else batch.staging_folder
-            os.environ["STAGING"] = staging_path
-            os.environ["PYTHONPATH"] = os.environ["PYTHONPATH"] + ";" + staging_path \
-              if os.environ.get("PYTHONPATH", False) else staging_path
+            if option_name:
+                staging_path = Path(batch.staging_folder, option_name).as_posix()
+                os.environ["REQUIREMENTS_FOLDER"] = os.environ["STAGING"] = staging_path
+                os.environ["PYTHONPATH"] = os.environ["PYTHONPATH"] + os.pathsep + staging_path \
+                    if os.environ.get("PYTHONPATH", False) else staging_path
+
+            else:
+                logger.warning("Option name is not provided for batch with stagings.")
 
         elif batch.options:
             if batch.version is not None:
