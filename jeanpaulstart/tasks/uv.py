@@ -2,12 +2,12 @@ from copy import deepcopy
 import os
 import re
 import subprocess
-from loguru import logger
-import urllib.request
+import requests
 from importlib.metadata import version, PackageNotFoundError
 from packaging.version import Version
 from packaging.utils import parse_wheel_filename, parse_sdist_filename
 
+from loguru import logger
 
 from jeanpaulstart.constants import *
 
@@ -27,9 +27,7 @@ def normalize_after_split(splitted):
 
 
 def _extract_files_names_from_url(url):
-    with urllib.request.urlopen(url) as r:
-        html = r.read().decode()
- 
+    html = requests.get(url).text
     return re.findall(r'href="[^"]+/([^/#"]+\.(?:whl|tar\.gz))', html)
 
 

@@ -8,9 +8,7 @@
             "program": "${workspaceFolder}/jeanpaulstart/__main__.py",
             "args": [
                 "-f",
-                "D:\\wizzard\\batchs\\launcher.yml",
-                "--option",
-                "test2"
+                "L:\\RESSOURCES\\WIZZ\\wizzard\\batchs\\zzortilege.yml",
             ],
             "console": "integratedTerminal",
             "justMyCode": true,
