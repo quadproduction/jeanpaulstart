@@ -41,7 +41,7 @@ def parse(value):
         return _parse_from_dict(value)
 
     if platform.system() == 'Windows':
-        return os.path.expanduser(os.path.expandvars(str(value).replace('%', '%%')))
+        return os.path.expanduser(os.path.expandvars(str(value)))
 
     return os.path.expanduser(os.path.expandvars(str(value)))
 
